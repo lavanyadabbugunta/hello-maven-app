@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -9,21 +10,33 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'mvn clean compile'
+                sh 'mvn clean compile'
             }
         }
 
         stage('Unit Test') {
             steps {
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
 
         stage('Package WAR') {
             steps {
-                bat 'mvn package'
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                sh 'mvn package'
+
+                archiveArtifacts artifacts: 'target/*.war',
+                                 fingerprint: true
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build, unit tests and WAR packaging completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check the Jenkins console output.'
         }
     }
 }
