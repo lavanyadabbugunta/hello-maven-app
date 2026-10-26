@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                bat 'mvn clean compile'
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+
+        stage('Package WAR') {
+            steps {
+                bat 'mvn package'
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+            }
+        }
+    }
+}
