@@ -23,14 +23,14 @@ pipeline {
             }
         }
 
-        stage('Generate WAR') {
-            steps {
-                dir('hello-maven-app/hello-maven-app') {
-                    sh 'mvn package'
-                    archiveArtifacts artifacts: 'hello-maven-app/hello-maven-app/target/*.war',
-                                     fingerprint: true
-                }
-            }
+      stage('Generate WAR') {
+    steps {
+        dir('hello-maven-app/hello-maven-app') {
+            sh 'mvn package'
         }
+        archiveArtifacts artifacts: 'hello-maven-app/hello-maven-app/target/*.war',
+                         fingerprint: true
+    }
+}
     }
 }
